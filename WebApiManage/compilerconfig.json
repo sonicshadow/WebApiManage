@@ -1,0 +1,10 @@
+﻿[
+  {
+    "outputFile": "Content/less/api-createEdit.css",
+    "inputFile": "Content/less/api-createEdit.less"
+  },
+  {
+    "outputFile": "Content/less/api-Index.css",
+    "inputFile": "Content/less/api-Index.less"
+  }
+]

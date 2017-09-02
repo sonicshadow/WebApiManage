@@ -1,0 +1,87 @@
+﻿@model IEnumerable<WebApiManage.Models.Api>
+
+@{
+    string projectName = ViewBag.ProjectName;
+    ViewBag.Title = ViewBag.ProjectName;
+    var pid = Convert.ToInt32(Request["pid"]);
+    var groups = ViewBag.Groups;
+    var group = Request["group"] == null ? "" : Request["group"];
+}
+<script src="~/Scripts/jquery.pin.js"></script>
+<h2>@projectName</h2>
+<link href="~/Content/less/api-Index.css" rel="stylesheet" />
+<p style="text-danger">
+    F12打开控制台进行调试，_data是返回结果
+</p>
+<div class="tool">
+    <div class="tool-in">
+        <p>
+            <a class="btn btn-default btn-success" href="@Url.Action("Create", new { pid = pid ,returnUrl = Url.Action(), group = Request["Group"]})">
+                添加API
+            </a>
+            筛选
+            <select id="selGroup" class="form-control" style="display:inline-block">
+                <option url="@Url.Action("Index", new { pid = pid})" value="">所有</option>
+                @foreach (var item in groups)
+                {
+                    <option url="@Url.Action("Index", new { pid = pid, group = item })" value="@item">@item</option>
+                }
+            </select>
+            <script>
+                $("#selGroup").val("@group");
+            </script>
+        </p>
+        <p>
+            <input id="txtTest" class="form-control" type="text" value="" placeholder="地址" />
+        </p>
+        <p>
+            <input id="txtJSON" class="form-control" type="text" value="" placeholder='post参数json格式{"name1":"value1","name2":"value2"}' />
+        </p>
+        <p>
+            <input id="btnGet" class="btn btn-default" type="button" value="GET测试" />
+            <input id="btnPost" class="btn btn-default" type="button" value="POST测试" />
+            <span class="label"></span>
+        </p>
+    </div>
+</div>
+
+<table id="apiList" class="table table-striped">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Name)
+            </th>
+            <th>
+                内容
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Info)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+            {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td class="parame">
+                    <p>@Html.DisplayFor(modelItem => item.Type)</p>
+                    <p name="url">@Html.DisplayFor(modelItem => item.Url)</p>
+                    <p name="par">@Html.DisplayFor(modelItem => item.Parameters)</p>
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Info)
+
+                </td>
+                <td class="control">
+                    @Html.ActionLink("编辑", "Edit", new { id = item.ID, pid = pid, returnUrl = Url.Action() }) |
+                    @Html.ActionLink("删除", "Delete", new { id = item.ID, pid = pid, returnUrl = Url.Action() })
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+<script src="~/Scripts/api-index.js"></script>
